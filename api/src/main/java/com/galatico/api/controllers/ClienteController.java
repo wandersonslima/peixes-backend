@@ -1,7 +1,6 @@
 package com.galatico.api.controllers;
 
 import com.galatico.api.entity.ClienteEntity;
-import com.galatico.api.repositories.ClienteRepository;
 import com.galatico.api.service.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,15 +56,14 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.OK).body(clienteEntityOptional.get());
     }
 
-    /*@GetMapping("/nome/{nome}")
+    @GetMapping("/nome/{nome}")
     public ResponseEntity<Object> findByNome(@PathVariable(value = "nome") String nome)
     {
-        Optional<Object> clienteEntityOptional = clienteService.findByNome(nome);
-        if(!clienteEntityOptional.isPresent())
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontado!");
+        List<ClienteEntity> clienteEntity = clienteService.findByNome(nome);
+
+        if(!clienteEntity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(clienteEntity);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(clienteEntityOptional.get());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado !");
     }
-    */
 }
