@@ -13,7 +13,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
 
     boolean existsByNome(String nome);
 
-   @Query(" select c from ClienteEntity c where (c.nome) like %:nome% ")
+   @Query(" select c from ClienteEntity c where (c.nome) ilike %:nome% ")
     List<ClienteEntity> findByNome (@Param("nome") String nome);
 
 

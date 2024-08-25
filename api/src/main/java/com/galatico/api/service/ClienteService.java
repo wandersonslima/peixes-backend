@@ -34,5 +34,4 @@ public class ClienteService {
        return clienteRepository.findByNome(nome);
     }
 
-
 }
