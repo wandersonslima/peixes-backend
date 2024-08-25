@@ -4,6 +4,7 @@ import com.galatico.api.entity.ClienteEntity;
 import com.galatico.api.service.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +20,6 @@ public class ClienteController {
 
     private final ClienteService clienteService;
 
-    /*
-    @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid ClienteEntity clienteEntity){
-        boolean exists = clienteRepository.existsByNome(clienteEntity.getNome());
-        if (!exists){
-            return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.save(clienteEntity));
-        }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Cliente já cadastrado !");
-    }*/
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid ClienteEntity clienteEntity)
     {
@@ -40,7 +32,6 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Cliente já cadastrado !");
     }
 
-
     @GetMapping
     public ResponseEntity<List<ClienteEntity>> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(clienteService.findAll());
@@ -51,7 +42,7 @@ public class ClienteController {
         Optional<ClienteEntity> clienteEntityOptional = clienteService.findByID(id);
         if(!clienteEntityOptional.isPresent())
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontado!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(clienteEntityOptional.get());
     }
@@ -66,4 +57,16 @@ public class ClienteController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado !");
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") Integer id){
+        Optional<ClienteEntity> clienteEnityOptional = clienteService.findByID(id);
+        if(!clienteEnityOptional.isPresent())
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado!");
+        }
+        clienteService.delete(clienteEnityOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Cliente Deletado com sucesso!");
+    }
+
 }

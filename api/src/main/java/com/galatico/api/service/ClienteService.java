@@ -34,4 +34,8 @@ public class ClienteService {
        return clienteRepository.findByNome(nome);
     }
 
+    public void delete(ClienteEntity clienteEntity){
+        clienteRepository.delete(clienteEntity);
+    }
+
 }
