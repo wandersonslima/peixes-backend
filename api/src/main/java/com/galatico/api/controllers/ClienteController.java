@@ -46,15 +46,26 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.OK).body(clienteEntityOptional.get());
     }
 
-    @GetMapping("/nome/{nome}")
-    public ResponseEntity<Object> findByNome(@PathVariable(value = "nome") String nome)
-    {
+//    @GetMapping("/nome/{nome}")
+//    public ResponseEntity<Object> findByNome(@PathVariable(value = "nome") String nome)
+//    {
+//        List<ClienteEntity> clienteEntity = clienteService.findByNome(nome);
+//
+//        if(!clienteEntity.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.OK).body(clienteEntity);
+//        }
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado !");
+//    }
+
+    @GetMapping("/nome")
+    public  ResponseEntity<Object> findByNome ( @RequestParam(value = "nome") String nome){
+
         List<ClienteEntity> clienteEntity = clienteService.findByNome(nome);
 
         if(!clienteEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(clienteEntity);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado !");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
     }
 
     @DeleteMapping("/{id}")
