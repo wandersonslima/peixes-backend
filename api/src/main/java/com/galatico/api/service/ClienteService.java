@@ -22,12 +22,19 @@ public class ClienteService {
         return null;
     }
 
+    public ClienteEntity atualizar (ClienteEntity clienteEntity) {
+        return clienteRepository.save(clienteEntity);
+    }
+
     public Optional<ClienteEntity> findByID(Integer id){
         return  clienteRepository.findById(id);
     }
 
     public List<ClienteEntity> findAll(){
         return clienteRepository.findAll();
+    }
+    public List<ClienteEntity> findAllByOrderByNome(){
+        return clienteRepository.findAllByOrderByNome();
     }
 
     public List<ClienteEntity> findByNome(String nome){

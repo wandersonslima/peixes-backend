@@ -1,13 +1,18 @@
 package com.galatico.api.controllers;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+import com.galatico.api.dtos.ClientesDto;
 import com.galatico.api.entity.ClienteEntity;
 import com.galatico.api.service.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +38,7 @@ public class ClienteController {
 
     @GetMapping
     public ResponseEntity<List<ClienteEntity>> getAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(clienteService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(clienteService.findAllByOrderByNome());
     }
 
     @GetMapping("{id}")
@@ -46,16 +51,16 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.OK).body(clienteEntityOptional.get());
     }
 
-//    @GetMapping("/nome/{nome}")
-//    public ResponseEntity<Object> findByNome(@PathVariable(value = "nome") String nome)
-//    {
-//        List<ClienteEntity> clienteEntity = clienteService.findByNome(nome);
-//
-//        if(!clienteEntity.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.OK).body(clienteEntity);
-//        }
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado !");
-//    }
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<Object> findByNomePath (@PathVariable(value = "nome") String nome)
+    {
+        List<ClienteEntity> clienteEntity = clienteService.findByNome(nome);
+
+        if(!clienteEntity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(clienteEntity);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado !");
+    }
 
     @GetMapping("/nome")
     public  ResponseEntity<Object> findByNome ( @RequestParam(value = "nome") String nome){
@@ -66,6 +71,20 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.OK).body(clienteEntity);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> atualizar(@PathVariable(value = "id") Integer id,
+                                            @RequestBody @Valid ClientesDto clientesDto) {
+        System.out.println(clientesDto);
+        Optional<ClienteEntity> clienteEntityOptional = clienteService.findByID(id);
+        if (!clienteEntityOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
+        }
+        var clienteEntity = new ClienteEntity();
+        BeanUtils.copyProperties(clientesDto, clienteEntity);
+        clienteEntity.setId(clienteEntityOptional.get().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(clienteService.atualizar(clienteEntity));
     }
 
     @DeleteMapping("/{id}")
