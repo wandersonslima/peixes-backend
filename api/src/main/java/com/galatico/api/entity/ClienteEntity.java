@@ -1,5 +1,6 @@
 package com.galatico.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_clientes")
@@ -33,5 +36,12 @@ public class ClienteEntity implements Serializable {
     @Column(name = "telefone", nullable = false)
     private String telefone;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY)
+    private Set<DebitosEntity> debitos = new HashSet<>();
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY)
+    private Set<PedidosEntity> pedidos = new HashSet<>();
 
 }
