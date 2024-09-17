@@ -1,18 +1,15 @@
 package com.galatico.api.controllers;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.galatico.api.dtos.ClientesDto;
 import com.galatico.api.entity.ClienteEntity;
 import com.galatico.api.service.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 

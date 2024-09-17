@@ -1,5 +1,6 @@
 package com.galatico.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class ProdutosEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "nome", nullable = false)
@@ -33,6 +35,7 @@ public class ProdutosEntity implements Serializable {
     private Float preco;
 
     @Column(name = "data_cadastro", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private LocalDate data_cadastro;
 
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
