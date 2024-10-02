@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -41,7 +42,7 @@ public class ClienteEntity implements Serializable {
     private Set<DebitosEntity> debitos = new HashSet<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.EAGER)
     private Set<PedidosEntity> pedidos = new HashSet<>();
 
 }

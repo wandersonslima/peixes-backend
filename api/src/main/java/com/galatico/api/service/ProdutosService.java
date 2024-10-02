@@ -1,14 +1,11 @@
 package com.galatico.api.service;
 
-import com.galatico.api.dtos.ProdutosDto;
-import com.galatico.api.entity.ClienteEntity;
 import com.galatico.api.entity.ProdutosEntity;
 import com.galatico.api.repositories.ProdutosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +17,8 @@ public class ProdutosService {
 
     public ProdutosEntity save (ProdutosEntity produtosEntity){
 
-        LocalDate data = LocalDate.now();
-        produtosEntity.setData_cadastro(data);
+        //LocalDate data = LocalDate.now();
+        produtosEntity.setData_cadastro(LocalDate.now());
         return produtosRepository.save(produtosEntity);
     }
 

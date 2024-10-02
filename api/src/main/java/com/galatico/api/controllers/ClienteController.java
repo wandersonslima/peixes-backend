@@ -22,49 +22,53 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid ClienteEntity clienteEntity)
+    public ResponseEntity<Object> save(@RequestBody @Valid ClientesDto clientesDto)
     {
-       Optional<ClienteEntity> clientEntityOptinal = Optional.ofNullable(clienteService.save(clienteEntity));
+        var clienteEntity = new ClienteEntity();
+        BeanUtils.copyProperties(clientesDto, clienteEntity);
+        Optional<ClienteEntity> clientEntityOptinal = Optional.ofNullable(clienteService.save(clienteEntity));
 
-       if (clientEntityOptinal.isPresent()){
-           clienteService.save(clienteEntity);
-           return ResponseEntity.status(HttpStatus.CREATED).body(clienteEntity);
-       }
+        if (clientEntityOptinal.isPresent()) {
+            clienteService.save(clienteEntity);
+            return ResponseEntity.status(HttpStatus.CREATED).body(clienteEntity);
+        }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Cliente já cadastrado !");
     }
 
     @GetMapping
-    public ResponseEntity<List<ClienteEntity>> getAll(){
+    public ResponseEntity<List<ClienteEntity>> getAll()
+    {
         return ResponseEntity.status(HttpStatus.OK).body(clienteService.findAllByOrderByNome());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Object> findByID(@PathVariable(value = "id") Integer id){
+    public ResponseEntity<Object> findByID(@PathVariable(value = "id") Integer id)
+    {
         Optional<ClienteEntity> clienteEntityOptional = clienteService.findByID(id);
-        if(!clienteEntityOptional.isPresent())
-        {
+        if (!clienteEntityOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(clienteEntityOptional.get());
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<Object> findByNomePath (@PathVariable(value = "nome") String nome)
+    public ResponseEntity<Object> findByNomePath(@PathVariable(value = "nome") String nome)
     {
         List<ClienteEntity> clienteEntity = clienteService.findByNome(nome);
 
-        if(!clienteEntity.isEmpty()) {
+        if (!clienteEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(clienteEntity);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado !");
     }
 
     @GetMapping("/nome")
-    public  ResponseEntity<Object> findByNome ( @RequestParam(value = "nome") String nome){
+    public ResponseEntity<Object> findByNome(@RequestParam(value = "nome") String nome)
+    {
 
         List<ClienteEntity> clienteEntity = clienteService.findByNome(nome);
 
-        if(!clienteEntity.isEmpty()) {
+        if (!clienteEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(clienteEntity);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
@@ -72,7 +76,8 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> atualizar(@PathVariable(value = "id") Integer id,
-                                            @RequestBody @Valid ClientesDto clientesDto) {
+                                            @RequestBody @Valid ClientesDto clientesDto)
+    {
         System.out.println(clientesDto);
         Optional<ClienteEntity> clienteEntityOptional = clienteService.findByID(id);
         if (!clienteEntityOptional.isPresent()) {
@@ -85,10 +90,10 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable(value = "id") Integer id){
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") Integer id)
+    {
         Optional<ClienteEntity> clienteEnityOptional = clienteService.findByID(id);
-        if(!clienteEnityOptional.isPresent())
-        {
+        if (!clienteEnityOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado!");
         }
         clienteService.delete(clienteEnityOptional.get());

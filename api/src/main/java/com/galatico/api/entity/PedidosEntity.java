@@ -1,5 +1,6 @@
 package com.galatico.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class PedidosEntity implements Serializable {
     private Integer id;
 
     @Column(name = "data_pedido", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private LocalDate data_pedido;
 
     @Column(name = "valor_total", nullable = false)
